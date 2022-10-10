@@ -14,7 +14,7 @@ export function MainView() {
     return (
         <View style={styles.container}>
             <Text>Open up App.tsx to start working on your app!</Text>
-            <Text>second component!</Text>
+            <Text>second</Text>
         </View>
     );
 }
