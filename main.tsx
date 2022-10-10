@@ -1,20 +1,20 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { HeavyText, LightText, NormalText } from "./components";
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        padding: 16,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 });
 
 export function MainView() {
     return (
         <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
-            <Text>second</Text>
+            <HeavyText>October 5, 2022</HeavyText>
+            <LightText>5:04pm</LightText>
+            <NormalText>Exerted enterence focus hear him</NormalText>
         </View>
     );
 }
