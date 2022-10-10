@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { PrimaryButton, ButtonContainer } from "./components/button_components";
+import { PrimaryButton, ButtonContainer } from "./components/button";
 import { HeavyText, LightText, NormalText } from "./components/text";
 
 const styles = StyleSheet.create({
