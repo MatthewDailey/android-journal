@@ -22,8 +22,8 @@ const textStyle = StyleSheet.create({
     }
 });
 
-export const HeavyText = (props: TextProps) => (
-    <Text style={textStyle.bold} {...props}/>
+export const HeavyText = (props: TextProps & {color?: string}) => (
+    <Text {...props} style={{...textStyle.bold, color: props.color}} />
 )
 
 export const NormalText = (props: TextProps) => (

@@ -42,6 +42,7 @@ exports[`Component Snapshot Tests ButtonContainer 1`] = `
     <Text
       style={
         Object {
+          "color": undefined,
           "fontSize": 16,
           "fontWeight": "bold",
         }
@@ -87,6 +88,7 @@ exports[`Component Snapshot Tests ButtonContainer 1`] = `
     <Text
       style={
         Object {
+          "color": undefined,
           "fontSize": 16,
           "fontWeight": "bold",
         }
@@ -109,6 +111,7 @@ exports[`Component Snapshot Tests DateListItem 1`] = `
   <Text
     style={
       Object {
+        "color": undefined,
         "fontSize": 16,
         "fontWeight": "bold",
       }
@@ -207,6 +210,7 @@ exports[`Component Snapshot Tests HeavyText 1`] = `
 <Text
   style={
     Object {
+      "color": undefined,
       "fontSize": 16,
       "fontWeight": "bold",
     }
@@ -355,6 +359,7 @@ exports[`Component Snapshot Tests PrimaryButton 1`] = `
   <Text
     style={
       Object {
+        "color": undefined,
         "fontSize": 16,
         "fontWeight": "bold",
       }
