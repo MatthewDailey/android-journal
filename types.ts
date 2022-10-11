@@ -1,5 +1,5 @@
 export type JournalEntry = {
-    id: string;
     dateMs: number;
-    type: "journal"|"gratitude",
+    type: "journal"|"gratitude";
+    text: string;
 }
