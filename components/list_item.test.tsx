@@ -78,4 +78,5 @@ describe('List Items', () => {
             expect(header.props.children).toContain('Today')
         })
     })
+
 })

@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         paddingBottom: 8,
     },
+    dateListItem: {
+        padding: 8,
+    },
 });
 
 function dateMsToHoursAndMinutesString(dateMs: number) {
@@ -44,8 +47,14 @@ export const DateListItem = (props: { dateMs: number }) => {
     const today = new Date();
     const isToday = today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear();
     return (
-        <View style={styles.listItem}>
+        <View style={styles.dateListItem}>
             <HeavyText>{isToday? 'Today' : monthDayYear}</HeavyText>
         </View>
     )
 }
+
+export const NoEntryListItem = () => (
+    <View style={styles.listItem}>
+        <NormalText>NO ENTRY TODAY</NormalText>
+    </View>
+)
