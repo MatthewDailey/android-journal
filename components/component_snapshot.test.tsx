@@ -1,7 +1,7 @@
 import React from "react"
 import renderer from 'react-test-renderer'
-import { ButtonContainer, PrimaryButton } from "./components/button"
-import { HeavyText, LightText, NormalText } from "./components/text"
+import { ButtonContainer, PrimaryButton } from "./button"
+import { HeavyText, LightText, NormalText } from "./text"
 
 describe('Component Snapshot Tests', () => {
     it('PrimaryButton', () => {    
