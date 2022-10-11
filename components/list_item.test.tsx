@@ -1,7 +1,7 @@
 import React from "react"
 import renderer, { ReactTestInstance } from 'react-test-renderer'
 import {render, screen, fireEvent} from '@testing-library/react-native'
-import { GratitudeListItem } from "./list_items"
+import { GratitudeListItem, JournalListItem } from "./list_items"
 import { LightText, NormalText } from "./text"
 
 describe('List Items', () => {
@@ -31,6 +31,14 @@ describe('List Items', () => {
             expect(screen.getByText(longText).props.numberOfLines).toEqual(2)
             fireEvent.press(renderResult.container.children[0] as ReactTestInstance)
             expect(screen.getByText(longText).props.numberOfLines).toEqual(undefined)
+        })
+    })
+
+    describe('JournalListItem', () => {
+        it('presents date - PM', () => {
+            const tree: any = renderer.create(<JournalListItem text="amazing wife" dateMs={1665553993440} />)
+            const header = tree.root.findByType(LightText) 
+            expect(header.props.children).toEqual('10:53pm')
         })
     })
 })
