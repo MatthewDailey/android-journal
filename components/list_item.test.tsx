@@ -1,5 +1,6 @@
 import React from "react"
 import renderer from 'react-test-renderer'
+import {render, screen, fireEvent} from '@testing-library/react-native'
 import { GratitudeListItem } from "./list_items"
 import { LightText, NormalText } from "./text"
 
@@ -22,12 +23,14 @@ describe('List Items', () => {
             expect(text.props.children).toEqual("amazing wife")
         })
         it('truncates text', () => {
-            const tree: any = renderer.create(<GratitudeListItem text={longText} dateMs={1665553993440} />)
-            const text = tree.root.findByType(NormalText)
-            expect(text.props.numberOfLines).toEqual(2)
+            render(<GratitudeListItem text={longText} dateMs={1665553993440} />)
+            expect(screen.getByText(longText).props.numberOfLines).toEqual(2)
         })
         it('expands text on tap', () => {
-            fail()
+            const renderResult = render(<GratitudeListItem text={longText} dateMs={1665553993440} />)
+            expect(screen.getByText(longText).props.numberOfLines).toEqual(2)
+            fireEvent.press(renderResult.container)
+            expect(screen.getByText(longText).props.numberOfLines).toEqual(undefined)
         })
     })
 })
