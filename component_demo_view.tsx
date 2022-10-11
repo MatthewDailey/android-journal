@@ -17,7 +17,7 @@ export function ComponentDemoView() {
             <HeavyText>October 5, 2022</HeavyText>
             <LightText>5:04pm</LightText>
             <NormalText>Exerted enterence focus hear him</NormalText>
-            <GratitudeListItem text="amazing wife" dateMs={1665553993440} />
+            <GratitudeListItem text="This is a long string that will wrap to many lines that needs to be truncated so that this element does not take up too much space." dateMs={1665553993440} />
             <ButtonContainer>
                 <PrimaryButton onPress={() => { } } text="Journal" />
                 <PrimaryButton onPress={() => { } } text="Gratitude" />

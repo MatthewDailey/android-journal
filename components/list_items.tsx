@@ -9,10 +9,11 @@ const styles = StyleSheet.create({
 export const GratitudeListItem = (props: { text: string, dateMs: number }) => {
     const date = new Date(props.dateMs);
     const hoursAndMinutesString = `${date.getHours()%12}:${date.getMinutes()}${date.getHours() > 12 ? "pm" : "am"}`; 
+
     return (
         <View style={styles.gratitude}>
             <LightText>{hoursAndMinutesString} • I'm grateful for...</LightText>
-            <NormalText>{props.text}</NormalText>
+            <NormalText numberOfLines={2}>{props.text}</NormalText>
         </View>
     )
 }
