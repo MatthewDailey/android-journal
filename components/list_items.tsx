@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import { HeavyText, LightText, NormalText } from "./text";
+import { HeavyText, LightText, NormalText, NormalTextInput } from "./text";
 
 const styles = StyleSheet.create({
     listItem: {
@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
     dateListItem: {
         padding: 8,
     },
+    focussed: {
+        backgroundColor: "#FFEEDB",
+    }
 });
 
 function dateMsToHoursAndMinutesString(dateMs: number) {
@@ -58,3 +61,12 @@ export const NoEntryListItem = () => (
         <NormalText>NO ENTRY TODAY</NormalText>
     </View>
 )
+
+export const EditingGratitudeListItem = (props: { header: string, onChangeText: (text: string) => void }) => {
+    return (
+        <View style={{...styles.listItem, ...styles.focussed}}>
+            <LightText>{props.header}</LightText>
+            <NormalTextInput multiline={true} onChangeText={props.onChangeText} autoFocus />
+        </View>
+    )
+}

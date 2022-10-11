@@ -1,9 +1,9 @@
+import { fireEvent, render, screen } from '@testing-library/react-native'
 import React from "react"
-import renderer, { ReactTestInstance } from 'react-test-renderer'
-import {render, screen, fireEvent} from '@testing-library/react-native'
-import { DateListItem, GratitudeListItem, JournalListItem } from "./list_items"
-import { HeavyText, LightText, NormalText } from "./text"
 import { Text } from "react-native"
+import renderer from 'react-test-renderer'
+import { DateListItem, GratitudeListItem, JournalListItem } from "./list_items"
+import { LightText, NormalText } from "./text"
 
 describe('List Items', () => {
     const longText = "This is a long string that will wrap to many lines that needs to be truncated so that this element does not take up too much space. This is a long string that will wrap to many lines that needs to be truncated so that this element does not take up too much space."

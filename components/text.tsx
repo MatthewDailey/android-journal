@@ -1,8 +1,8 @@
-import { StyleSheet, Text, TextProps, View } from "react-native";
+import { StyleSheet, Text, TextProps, TextInput, TextInputProps } from "react-native";
 
 const fontSize = 16
 const textStyle = StyleSheet.create({
-    regular: {
+    normal: {
         fontWeight: "normal",
         fontSize,
     },
@@ -14,6 +14,11 @@ const textStyle = StyleSheet.create({
         fontWeight: "normal",
         fontSize: 12,
         opacity: 0.5,
+    },
+    normalInput: {
+        fontWeight: "normal",
+        fontSize,
+        borderWidth: 0,
     }
 });
 
@@ -22,9 +27,13 @@ export const HeavyText = (props: TextProps) => (
 )
 
 export const NormalText = (props: TextProps) => (
-    <Text style={textStyle.regular} {...props}/>
+    <Text style={textStyle.normal} {...props}/>
 )
 
 export const LightText = (props: TextProps) => (
     <Text style={textStyle.light} {...props}/>
+)
+
+export const NormalTextInput = (props: TextInputProps) => (
+    <TextInput style={textStyle.normalInput} {...props}/>
 )
