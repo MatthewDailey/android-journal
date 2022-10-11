@@ -98,6 +98,111 @@ exports[`Component Snapshot Tests ButtonContainer 1`] = `
 </View>
 `;
 
+exports[`Component Snapshot Tests DateListItem 1`] = `
+<View
+  style={
+    Object {
+      "padding": 8,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 16,
+        "fontWeight": "bold",
+      }
+    }
+  >
+    October 10, 2022
+  </Text>
+</View>
+`;
+
+exports[`Component Snapshot Tests EditingListItem 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#FFEEDB",
+      "paddingBottom": 8,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "paddingTop": 8,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 12,
+        "fontWeight": "normal",
+        "opacity": 0.5,
+      }
+    }
+  >
+    I'm grateful for...
+  </Text>
+  <TextInput
+    autoFocus={true}
+    multiline={true}
+    onChangeText={[Function]}
+    style={
+      Object {
+        "borderWidth": 0,
+        "fontSize": 16,
+        "fontWeight": "normal",
+      }
+    }
+    testID="edit_input"
+  />
+</View>
+`;
+
+exports[`Component Snapshot Tests GratitudeListItem 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "paddingBottom": 8,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "paddingTop": 8,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 12,
+        "fontWeight": "normal",
+        "opacity": 0.5,
+      }
+    }
+  >
+    10:53pm • I'm grateful for...
+  </Text>
+  <Text
+    numberOfLines={2}
+    style={
+      Object {
+        "fontSize": 16,
+        "fontWeight": "normal",
+      }
+    }
+  >
+    This is a long string that will wrap to many lines that needs to be truncated so that this element does not take up too much space.
+  </Text>
+</View>
+`;
+
 exports[`Component Snapshot Tests HeavyText 1`] = `
 <Text
   style={
@@ -109,6 +214,51 @@ exports[`Component Snapshot Tests HeavyText 1`] = `
 >
   October 5, 2022
 </Text>
+`;
+
+exports[`Component Snapshot Tests JournalListItem 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "paddingBottom": 8,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "paddingTop": 8,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 12,
+        "fontWeight": "normal",
+        "opacity": 0.5,
+      }
+    }
+  >
+    10:53pm
+  </Text>
+  <Text
+    numberOfLines={2}
+    style={
+      Object {
+        "fontSize": 16,
+        "fontWeight": "normal",
+      }
+    }
+  >
+    This is a long string that will wrap to many lines that needs to be truncated so that this element does not take up too much space.
+  </Text>
+</View>
 `;
 
 exports[`Component Snapshot Tests LightText 1`] = `
@@ -125,6 +275,30 @@ exports[`Component Snapshot Tests LightText 1`] = `
 </Text>
 `;
 
+exports[`Component Snapshot Tests NoEntryListItem 1`] = `
+<View
+  style={
+    Object {
+      "paddingBottom": 8,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "paddingTop": 8,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 16,
+        "fontWeight": "normal",
+      }
+    }
+  >
+    NO ENTRY TODAY
+  </Text>
+</View>
+`;
+
 exports[`Component Snapshot Tests NormalText 1`] = `
 <Text
   style={
@@ -136,6 +310,18 @@ exports[`Component Snapshot Tests NormalText 1`] = `
 >
   Exerted enterence focus hear him
 </Text>
+`;
+
+exports[`Component Snapshot Tests NormalTextInput 1`] = `
+<TextInput
+  style={
+    Object {
+      "borderWidth": 0,
+      "fontSize": 16,
+      "fontWeight": "normal",
+    }
+  }
+/>
 `;
 
 exports[`Component Snapshot Tests PrimaryButton 1`] = `
