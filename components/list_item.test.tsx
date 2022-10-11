@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native'
 import React from "react"
 import { Text } from "react-native"
 import renderer from 'react-test-renderer'
-import { DateListItem, GratitudeListItem, JournalListItem } from "./list_items"
+import { DateListItem, EditingListItem, GratitudeListItem, JournalListItem } from "./list_items"
 import { LightText, NormalText } from "./text"
 
 describe('List Items', () => {
@@ -78,5 +78,22 @@ describe('List Items', () => {
             expect(header.props.children).toContain('Today')
         })
     })
+
+    describe('EditingListItem', () => { 
+        it('shows header if provided', () => {
+            const tree: any = renderer.create(<EditingListItem header="header" onChangeText={() => {}}/>)
+            expect(tree.root.findByType(LightText)).toBeDefined()
+        })
+        it('does not show header if not provided', () => {
+            const tree: any = renderer.create(<EditingListItem onChangeText={() => {}}/>)
+            expect(tree.root.findAllByType(LightText).length).toEqual(0)
+        })
+        it('calls change handler', () => {
+            const onChangeText = jest.fn()
+            const renderResult = render(<EditingListItem header="header" onChangeText={onChangeText}/>)
+            fireEvent.changeText(screen.getByTestId('edit_input'), 'new text')
+            expect(onChangeText).toHaveBeenCalledWith('new text')
+        })
+     })
 
 })

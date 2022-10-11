@@ -62,11 +62,11 @@ export const NoEntryListItem = () => (
     </View>
 )
 
-export const EditingGratitudeListItem = (props: { header: string, onChangeText: (text: string) => void }) => {
+export const EditingListItem = (props: { header?: string, onChangeText: (text: string) => void }) => {
     return (
         <View style={{...styles.listItem, ...styles.focussed}}>
-            <LightText>{props.header}</LightText>
-            <NormalTextInput multiline={true} onChangeText={props.onChangeText} autoFocus />
+            {props.header && <LightText>{props.header}</LightText>}
+            <NormalTextInput multiline={true} onChangeText={props.onChangeText} autoFocus testID="edit_input"/>
         </View>
     )
 }

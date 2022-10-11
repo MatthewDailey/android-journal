@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { PrimaryButton, ButtonContainer } from "./components/button";
-import { DateListItem, EditingGratitudeListItem, GratitudeListItem, NoEntryListItem } from "./components/list_items";
+import { DateListItem, EditingListItem, GratitudeListItem, NoEntryListItem } from "./components/list_items";
 import { HeavyText, LightText, NormalText } from "./components/text";
 
 const styles = StyleSheet.create({
@@ -15,7 +15,7 @@ export function ComponentDemoView() {
     return (
         <View style={styles.container}>
             <DateListItem dateMs={new Date().getTime()}/>
-            <EditingGratitudeListItem header="I'm grateful for..." onChangeText={function (text: string): void {} } />
+            <EditingListItem header="I'm grateful for..." onChangeText={function (text: string): void {} } />
             <DateListItem dateMs={new Date().getTime()}/>
             <NoEntryListItem />
             <DateListItem dateMs={new Date().getTime() - 1000 * 60 * 60 * 24}/>
