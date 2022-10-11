@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import { LightText, NormalText } from "./text";
+import { HeavyText, LightText, NormalText } from "./text";
 
 const styles = StyleSheet.create({
     listItem: {
@@ -31,9 +31,21 @@ const TextListItem = (props: { text: string, header: string }) => {
 }
 
 export const GratitudeListItem = (props: { text: string, dateMs: number }) => (
-    <TextListItem text={props.text} header={`${dateMsToHoursAndMinutesString(props.dateMs)} • I'm grateful for...`}/>
+    <TextListItem text={props.text} header={`${dateMsToHoursAndMinutesString(props.dateMs)} • I'm grateful for...`} />
 )
 
 export const JournalListItem = (props: { text: string, dateMs: number }) => (
-    <TextListItem text={props.text} header={dateMsToHoursAndMinutesString(props.dateMs)}/>
+    <TextListItem text={props.text} header={dateMsToHoursAndMinutesString(props.dateMs)} />
 )
+
+export const DateListItem = (props: { dateMs: number }) => {
+    const date = new Date(props.dateMs);
+    const monthDayYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
+    const today = new Date();
+    const isToday = today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear();
+    return (
+        <View style={styles.listItem}>
+            <HeavyText>{isToday? 'Today' : monthDayYear}</HeavyText>
+        </View>
+    )
+}
