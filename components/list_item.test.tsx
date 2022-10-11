@@ -29,7 +29,7 @@ describe('List Items', () => {
         it('expands text on tap', () => {
             const renderResult = render(<GratitudeListItem text={longText} dateMs={1665553993440} />)
             expect(screen.getByText(longText).props.numberOfLines).toEqual(2)
-            fireEvent.press(renderResult.container.children[0] as ReactTestInstance)
+            fireEvent.press(screen.getByText(longText))
             expect(screen.getByText(longText).props.numberOfLines).toEqual(undefined)
         })
     })
@@ -39,6 +39,26 @@ describe('List Items', () => {
             const tree: any = renderer.create(<JournalListItem text="amazing wife" dateMs={1665553993440} />)
             const header = tree.root.findByType(LightText) 
             expect(header.props.children).toEqual('10:53pm')
+        })
+        it('presents date - AM', () => {
+            const tree: any = renderer.create(<JournalListItem text="amazing wife" dateMs={1665503993440} />)
+            const header = tree.root.findByType(LightText)
+            expect(header.props.children).toContain('8:59am')
+        })
+        it('includes text', () => {
+            const tree: any = renderer.create(<JournalListItem text="amazing wife" dateMs={1665553993440} />)
+            const text = tree.root.findByType(NormalText)
+            expect(text.props.children).toEqual("amazing wife")
+        })
+        it('truncates text', () => {
+            render(<JournalListItem text={longText} dateMs={1665553993440} />)
+            expect(screen.getByText(longText).props.numberOfLines).toEqual(2)
+        })
+        it('expands text on tap', () => {
+            const renderResult = render(<JournalListItem text={longText} dateMs={1665553993440} />)
+            expect(screen.getByText(longText).props.numberOfLines).toEqual(2)
+            fireEvent.press(screen.getByText(longText))
+            expect(screen.getByText(longText).props.numberOfLines).toEqual(undefined)
         })
     })
 })
