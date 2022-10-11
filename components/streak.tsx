@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
 export const StreakHeader = (props: { count: number, isStreak: boolean }) => {
     const color = props.isStreak ? '#61C9A8' : '#BA3B46'
 
+    // TODO: Do not animate on launch with isStreak == true
     const timing = 300
     const fadeAnim = React.useRef(new Animated.Value(0)).current
     React.useEffect(() => {
