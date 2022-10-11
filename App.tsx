@@ -1,9 +1,9 @@
 import React from "react";
-import { MainView } from "./main";
+import { ComponentDemoView } from "./component_demo_view";
 
 export default function App() {
   return (
-    <MainView />
+    <ComponentDemoView />
   );
 }
 
