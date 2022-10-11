@@ -1,5 +1,5 @@
 import React from "react"
-import renderer from 'react-test-renderer'
+import renderer, { ReactTestInstance } from 'react-test-renderer'
 import {render, screen, fireEvent} from '@testing-library/react-native'
 import { GratitudeListItem } from "./list_items"
 import { LightText, NormalText } from "./text"
@@ -29,7 +29,7 @@ describe('List Items', () => {
         it('expands text on tap', () => {
             const renderResult = render(<GratitudeListItem text={longText} dateMs={1665553993440} />)
             expect(screen.getByText(longText).props.numberOfLines).toEqual(2)
-            fireEvent.press(renderResult.container)
+            fireEvent.press(renderResult.container.children[0] as ReactTestInstance)
             expect(screen.getByText(longText).props.numberOfLines).toEqual(undefined)
         })
     })
