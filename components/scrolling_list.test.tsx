@@ -43,4 +43,23 @@ describe('ScrollingList', () => {
         const tree = renderer.create(<ScrollingList entries={[journalEntry, journalEntry]} />)
         expect(tree.root.findAllByType(DateListItem).length).toBe(1)
     })
+    it('includes no entry if only entry is older', () => {
+        const journalEntry: JournalEntry = { type: "journal", text: "amazing wife", dateMs: oct10thMs }
+        const tree = renderer.create(<ScrollingList entries={[journalEntry]} />)
+        expect(tree.root.findByType(NoEntryListItem)).toBeTruthy()
+    })
+    it('sorts entries by date', () => {
+        const journalEntryOld: JournalEntry = { type: "journal", text: "old", dateMs: oct10thMs }
+        const journalEntryNew: JournalEntry = { type: "gratitude", text: "new", dateMs: nowMs }
+        const tree = renderer.create(<ScrollingList entries={[journalEntryOld, journalEntryNew]} />)
+        const dataToRender = tree.root.findByType(FlatList).props.data
+        console.log(dataToRender)
+        expect(dataToRender.length).toBe(4)
+        expect(dataToRender[0].type).toEqual("date")
+        expect(dataToRender[1].type).toEqual("entry")
+        expect(dataToRender[1].entryData.text).toEqual("new")
+        expect(dataToRender[2].type).toEqual("date")
+        expect(dataToRender[3].type).toEqual("entry")
+        expect(dataToRender[3].entryData.text).toEqual("old")
+    })
 })

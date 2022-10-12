@@ -11,7 +11,7 @@ type ListItemType = {
 } | {
     type: 'entry',
     entryData: JournalEntry,
-}
+} 
 // TODO: add editing type
 
 
@@ -38,7 +38,8 @@ export const ScrollingList = (props: { entries: JournalEntry[] }) => {
         }
     }
 
-    // TODO consider sorting entries by date
+    const localEntries = [...props.entries]
+    localEntries.sort((a, b) => b.dateMs - a.dateMs)
 
     const entryListToRender: ListItemType[] = []
     const nowMs = new Date().getTime()
@@ -47,11 +48,11 @@ export const ScrollingList = (props: { entries: JournalEntry[] }) => {
     const today = roundToDay(nowMs)
     let mostRecentlyAddedDay = today
 
-    if (props.entries.length === 0 || roundToDay(props.entries[0].dateMs) < today) {
+    if (localEntries.length === 0 || roundToDay(localEntries[0].dateMs) < today) {
         entryListToRender.push({ type: 'no_entry' })
     }
 
-    props.entries.forEach(entry => { 
+    localEntries.forEach(entry => { 
         const entryDay = roundToDay(entry.dateMs)
         if (entryDay < mostRecentlyAddedDay) {
             entryListToRender.push({ type: 'date', dateMs: entry.dateMs })
