@@ -21,7 +21,7 @@ async function storeEntries(entries: JournalEntry[]) {
 
 export default {
     useJournalEntries: (): JournalEntriesProps => {
-        const [entries, setEntries] = React.useState<JournalEntry[]>([]);
+        const [entries, setEntries] = React.useState<JournalEntry[]|undefined>(undefined);
     
         React.useEffect(() => {
             AsyncStorage.getItem(STORAGE_KEY)
@@ -29,6 +29,8 @@ export default {
                 console.log("Loaded entries", entriesStr);
                 if (entriesStr) {
                     setEntries(JSON.parse(entriesStr));
+                } else {
+                    setEntries([]);
                 }
             });
         }, []);

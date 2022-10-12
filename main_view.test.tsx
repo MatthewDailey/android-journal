@@ -10,12 +10,14 @@ import { ONE_DAY_MS } from './constants'
 
 describe('MainView', () => {
     it('renders key views', () => {
+        jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ entries: [], addEntry: jest.fn(), removeEntry: jest.fn() })
         const tree = renderer.create(<MainView />)
         expect(tree.root.findAllByType(ScrollingList).length).toEqual(1)
         expect(tree.root.findAllByType(StreakHeader).length).toEqual(1)
         expect(tree.root.findAllByType(PrimaryButton).length).toEqual(2)
     })
     it('can start adding gratitude', () => {
+        jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ entries: [], addEntry: jest.fn(), removeEntry: jest.fn() })
         render(<MainView />)
         fireEvent.press(screen.getByText('Gratitude'))
 
@@ -28,6 +30,7 @@ describe('MainView', () => {
         expect(screen.findByTestId('edit_input')).toBeTruthy()
     })
     it('can start adding journal', () => {
+        jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ entries: [], addEntry: jest.fn(), removeEntry: jest.fn() })
         render(<MainView />)
         fireEvent.press(screen.getByText('Journal'))
 
@@ -39,6 +42,7 @@ describe('MainView', () => {
         expect(screen.findByTestId('edit_input')).toBeTruthy()
     })
     it('can cancel adding', () => {
+        jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ entries: [], addEntry: jest.fn(), removeEntry: jest.fn() })
         render(<MainView />)
         fireEvent.press(screen.getByText('Journal'))
         fireEvent.press(screen.getByText('Cancel'))

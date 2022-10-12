@@ -1,5 +1,6 @@
 import React from 'react'
 import { Animated, View, StyleSheet } from 'react-native'
+import { colors } from '../constants'
 import { HeavyText } from './text'
 
 const styles = StyleSheet.create({
@@ -11,14 +12,14 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     ripple: {
-        backgroundColor: '#61C9A8',
+        backgroundColor: colors.green,
         borderRadius: 50,
         position: 'absolute',
     }
 })
 
 export const StreakHeader = (props: { count: number, isStreakActive: boolean }) => {
-    const color = props.isStreakActive ? '#61C9A8' : '#BA3B46'
+    const color = props.isStreakActive ? colors.green : colors.red
 
     // TODO: Do not animate on launch with isStreak == true
     const timing = 300

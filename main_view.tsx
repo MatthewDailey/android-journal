@@ -3,7 +3,7 @@ import { StyleSheet, View, StatusBar } from "react-native";
 import { ButtonContainer, PrimaryButton } from "./components/button";
 import { AddNewProps, roundToDay, ScrollingList } from "./components/scrolling_list";
 import { StreakHeader } from "./components/streak";
-import { ONE_DAY_MS } from "./constants";
+import { colors, ONE_DAY_MS } from "./constants";
 import JournalEntryHooks from "./journal_entries_hook";
 import { JournalEntry } from "./types";
 
@@ -50,6 +50,10 @@ export const MainView = () => {
     const [newEntry, setNewEntry] = React.useState<string>("");
     const onTextChange = setNewEntry;
 
+    if (!entries) {
+        return null;
+    }
+
     const buttonsFragment = () => {
         switch (appState) {
             case "addingJournal":
@@ -94,12 +98,17 @@ export const MainView = () => {
         }
     }
 
+    const isActiveStreak = firstEntryIsToday(entries);
+
     return (
         <View style={styles.container}>
-            <StreakHeader count={computeStreak(entries)} isStreakActive={firstEntryIsToday(entries)} />
+            <StreakHeader count={computeStreak(entries)} isStreakActive={isActiveStreak} />
             <ScrollingList entries={entries} addNew={getAddNew()} />
             {buttonsFragment()}
-            <StatusBar />
+            <StatusBar 
+                barStyle="light-content" 
+                backgroundColor={isActiveStreak ? colors.green : colors.red}
+            />
         </View >
     );
 }
