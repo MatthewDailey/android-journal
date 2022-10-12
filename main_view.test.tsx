@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent } from '@testing-library/react-native'
+import { render, screen, fireEvent } from '@testing-library/react-native'
 import renderer from 'react-test-renderer'
 import { MainView } from './main_view'
 import { ScrollingList } from './components/scrolling_list'
@@ -12,5 +12,28 @@ describe('MainView', () => {
         expect(tree.root.findAllByType(ScrollingList).length).toEqual(1)
         expect(tree.root.findAllByType(StreakHeader).length).toEqual(1)
         expect(tree.root.findAllByType(PrimaryButton).length).toEqual(2)
+    })
+    it('can start adding gratitude', () => {
+        render(<MainView />)
+        fireEvent.press(screen.getByText('Gratitude'))
+        
+        // Check buttons
+        expect(screen.getByText('Save')).toBeTruthy()
+        expect(screen.getByText('Cancel')).toBeTruthy()
+
+        // Check input
+        expect(screen.getByText("I'm grateful for...")).toBeTruthy()
+        expect(screen.findByTestId('edit_input')).toBeTruthy()
+    })
+    it('can start adding journal', () => {
+        render(<MainView />)
+        fireEvent.press(screen.getByText('Journal'))
+        
+        // Check buttons
+        expect(screen.getByText('Save')).toBeTruthy()
+        expect(screen.getByText('Cancel')).toBeTruthy()
+
+        // Check input
+        expect(screen.findByTestId('edit_input')).toBeTruthy()
     })
 })

@@ -3,12 +3,12 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { JournalEntry } from "../types";
 import { DateListItem, EditingListItem, GratitudeListItem, JournalListItem, NoEntryListItem } from './list_items';
 
-type AddNewProps = {
+export type AddNewProps = {
     type: 'journal' | 'gratitude';
     onTextChange: (text: string) => void;
 }
 
-type ListItemType = {
+export type ListItemType = {
     type: 'date',
     dateMs: number
 } | {
