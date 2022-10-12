@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "android.journal",
-    "slug": "android.journal",
+    "name": "Journal",
+    "slug": "journal",
+    "owner": "mjdailey",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
