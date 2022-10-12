@@ -1,3 +1,4 @@
+import React from 'react'
 import { JournalEntry } from "./types";
 
 export type JournalEntriesProps = {
@@ -8,9 +9,13 @@ export type JournalEntriesProps = {
 
 export default {
     useJournalEntries: (): JournalEntriesProps => {
+        const [entries, setEntries] = React.useState<JournalEntry[]>([]);
+    
         return {
-            entries: [],
-            addEntry: () => { },
+            entries,
+            addEntry: (entry) => { 
+                setEntries([entry].concat(entries));
+            },
             removeEntry: () => { },
         }
     }
