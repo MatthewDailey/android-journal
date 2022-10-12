@@ -21,7 +21,7 @@ export type ListItemType = {
     addNewProps: AddNewProps,
 }
 
-const roundToDay = (dateMs: number) => {
+export const roundToDay = (dateMs: number) => {
     const date = new Date(dateMs)
     return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime()
 }

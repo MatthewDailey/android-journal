@@ -1,9 +1,11 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { ButtonContainer, PrimaryButton } from "./components/button";
-import { AddNewProps, ScrollingList } from "./components/scrolling_list";
+import { AddNewProps, roundToDay, ScrollingList } from "./components/scrolling_list";
 import { StreakHeader } from "./components/streak";
+import { ONE_DAY_MS } from "./constants";
 import JournalEntryHooks from "./journal_entries_hook";
+import { JournalEntry } from "./types";
 
 const styles = StyleSheet.create({
     container: {
@@ -13,6 +15,34 @@ const styles = StyleSheet.create({
 });
 
 type AppState = "viewing" | "addingGratitude" | "addingJournal" | "removing";
+
+function firstEntryIsToday(entries: JournalEntry[]): boolean {
+    return entries.length > 0 && roundToDay(entries[0].dateMs) === roundToDay(Date.now());
+}
+
+function firstEntryIsYesterday(entries: JournalEntry[]): boolean {
+    return entries.length > 0 && roundToDay(entries[0].dateMs) === roundToDay(Date.now() - ONE_DAY_MS);
+}
+
+function computeStreak(entries: JournalEntry[]): number {
+    if (!(firstEntryIsToday(entries) || firstEntryIsYesterday(entries))) {
+        return 0
+    }
+    let streak = 0
+
+    // Init to tomorrow if we know the streak starts today.
+    let lastDate = Date.now() + (firstEntryIsToday(entries) ? ONE_DAY_MS : 0) 
+    for (const entry of entries) {
+        const dayDifference = roundToDay(lastDate) - roundToDay(entry.dateMs)
+        if (dayDifference === ONE_DAY_MS) {
+            streak++;
+        } else {
+            break;
+        }
+        lastDate = entry.dateMs;
+    }
+    return streak;
+}
 
 export const MainView = () => {
     const [appState, setAppState] = React.useState<AppState>("viewing");
@@ -67,7 +97,7 @@ export const MainView = () => {
 
     return (
         <View style={styles.container}>
-            <StreakHeader count={0} isStreak={false} />
+            <StreakHeader count={computeStreak(entries)} isStreak={false} />
             <ScrollingList entries={entries} addNew={getAddNew()} />
             {buttonsFragment()}
         </View >
