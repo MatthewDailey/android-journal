@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react-native'
 import renderer from 'react-test-renderer'
 import { ScrollingList } from './scrolling_list'
 import { FlatList } from 'react-native'
-import { DateListItem, GratitudeListItem, JournalListItem, NoEntryListItem } from './list_items'
+import { DateListItem, EditingListItem, GratitudeListItem, JournalListItem, NoEntryListItem } from './list_items'
 import { JournalEntry } from '../types'
 
 describe('ScrollingList', () => {
@@ -61,5 +61,24 @@ describe('ScrollingList', () => {
         expect(dataToRender[2].type).toEqual("date")
         expect(dataToRender[3].type).toEqual("entry")
         expect(dataToRender[3].entryData.text).toEqual("old")
+    })
+    it('shows gratitude editing view', () => {
+        const onTextChange = jest.fn()
+        const tree = renderer.create(<ScrollingList entries={[]} addNew={{ type: 'gratitude', onTextChange}} />)
+        const listItem = tree.root.findByType(EditingListItem)
+        expect(listItem.props.header).toEqual("I'm grateful for...")
+        expect(listItem.props.onChangeText).toEqual(onTextChange)
+    })
+    it('shows journal editing view', () => {
+        const onTextChange = jest.fn()
+        const tree = renderer.create(<ScrollingList entries={[]} addNew={{ type: 'journal', onTextChange}} />)
+        const listItem = tree.root.findByType(EditingListItem)
+        expect(listItem.props.header).toEqual(undefined)
+        expect(listItem.props.onChangeText).toEqual(onTextChange)
+    })
+    it('does not show no entry if editing', () => {
+        const onTextChange = jest.fn()
+        const tree = renderer.create(<ScrollingList entries={[]} addNew={{ type: 'gratitude', onTextChange}} />)
+        expect(tree.root.findAllByType(NoEntryListItem).length).toBe(0)
     })
 })
