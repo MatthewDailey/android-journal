@@ -36,4 +36,16 @@ describe('MainView', () => {
         // Check input
         expect(screen.findByTestId('edit_input')).toBeTruthy()
     })
+    it('can cancel adding', () => {
+        render(<MainView />)
+        fireEvent.press(screen.getByText('Journal'))
+        fireEvent.press(screen.getByText('Cancel'))
+        
+        // Check buttons
+        expect(screen.getByText('Journal')).toBeTruthy()
+        expect(screen.getByText('Gratitude')).toBeTruthy()
+
+        // Check input
+        expect(screen.queryByTestId('edit_input')).toBeFalsy()
+    })
 })

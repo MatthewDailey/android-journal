@@ -33,14 +33,12 @@ export const MainView = () => {
 
     const onTextChange = () => { }
 
-    let addNew: AddNewProps | undefined;
-
     const buttonsFragment = () => {
         switch (appState) {
             case "addingJournal":
             case "addingGratitude":
                 return (<ButtonContainer>
-                    <PrimaryButton text="Cancel" onPress={() => { }} />
+                    <PrimaryButton text="Cancel" onPress={() => {setAppState('viewing') }} />
                     <PrimaryButton text="Save" onPress={() => { }} />
                 </ButtonContainer>)
             case "viewing":
