@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, View, StatusBar } from "react-native";
+import { StyleSheet, View, StatusBar as RNStatusBar } from "react-native";
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { ButtonContainer, PrimaryButton } from "./components/button";
 import { AddNewProps, roundToDay, ScrollingList } from "./components/scrolling_list";
 import { StreakHeader } from "./components/streak";
@@ -9,6 +10,7 @@ import { JournalEntry } from "./types";
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: RNStatusBar.currentHeight,
         flex: 1,
     },
 });
@@ -105,10 +107,7 @@ export const MainView = () => {
             <StreakHeader count={computeStreak(entries)} isStreakActive={isActiveStreak} />
             <ScrollingList entries={entries} addNew={getAddNew()} />
             {buttonsFragment()}
-            <StatusBar 
-                barStyle="light-content" 
-                backgroundColor={isActiveStreak ? colors.green : colors.red}
-            />
+            <ExpoStatusBar backgroundColor={isActiveStreak ? colors.green : colors.red} />
         </View >
     );
 }
