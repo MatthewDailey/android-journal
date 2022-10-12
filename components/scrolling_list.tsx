@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MutableRefObject } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { JournalEntry } from "../types";
 import { DateListItem, EditingListItem, GratitudeListItem, JournalListItem, NoEntryListItem } from './list_items';
@@ -27,6 +27,8 @@ const roundToDay = (dateMs: number) => {
 }
 
 export const ScrollingList = (props: { entries: JournalEntry[], addNew?: AddNewProps }) => {
+    const flatListRef = React.useRef<FlatList<ListItemType>>(null)
+
     const renderItem = ({item} : {item: ListItemType}) => {
         switch(item.type) {
             case 'date':
@@ -54,7 +56,8 @@ export const ScrollingList = (props: { entries: JournalEntry[], addNew?: AddNewP
     entryListToRender.push({ type: 'date', dateMs: nowMs })
 
     if (props.addNew) {
-        entryListToRender.push({ type: 'editing', addNewProps: props.addNew })  
+        entryListToRender.push({ type: 'editing', addNewProps: props.addNew })
+        flatListRef.current?.scrollToIndex({ index: 0, animated: true })
     }
 
     const today = roundToDay(nowMs)
@@ -75,6 +78,8 @@ export const ScrollingList = (props: { entries: JournalEntry[], addNew?: AddNewP
 
     return (
         <FlatList 
+            ref={flatListRef}
+            scrollEnabled={!props.addNew}
             data={entryListToRender}
             renderItem={renderItem}
         />
