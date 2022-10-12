@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { ButtonContainer, PrimaryButton } from "./components/button";
 import { AddNewProps, ScrollingList } from "./components/scrolling_list";
 import { StreakHeader } from "./components/streak";
-import { JournalEntry } from "./types";
+import JournalEntryHooks from "./journal_entries_hook";
 
 const styles = StyleSheet.create({
     container: {
@@ -12,34 +12,32 @@ const styles = StyleSheet.create({
     },
 });
 
-type JournalEntriesProps = {
-    entries: JournalEntry[];
-    addEntry: (entry: JournalEntry) => void;
-    removeEntry: (entry: JournalEntry) => void;
-}
-export const useJournalEntries = (): JournalEntriesProps => {
-    return {
-        entries: [],
-        addEntry: () => { },
-        removeEntry: () => { },
-    }
-}
-
 type AppState = "viewing" | "addingGratitude" | "addingJournal" | "removing";
 
 export const MainView = () => {
     const [appState, setAppState] = React.useState<AppState>("viewing");
-    const { entries, addEntry, removeEntry } = useJournalEntries();
+    const { entries, addEntry, removeEntry } = JournalEntryHooks.useJournalEntries();
 
-    const onTextChange = () => { }
+    const [newEntry, setNewEntry] = React.useState<string>("");
+    const onTextChange = setNewEntry;
 
     const buttonsFragment = () => {
         switch (appState) {
             case "addingJournal":
+                return (<ButtonContainer>
+                    <PrimaryButton text="Cancel" onPress={() => {setAppState('viewing') }} />
+                    <PrimaryButton text="Save" onPress={() => { 
+                        addEntry({type: 'journal', text: newEntry, dateMs: Date.now()});
+                        setAppState('viewing');
+                    }} />
+                </ButtonContainer>)
             case "addingGratitude":
                 return (<ButtonContainer>
                     <PrimaryButton text="Cancel" onPress={() => {setAppState('viewing') }} />
-                    <PrimaryButton text="Save" onPress={() => { }} />
+                    <PrimaryButton text="Save" onPress={() => { 
+                        addEntry({type: 'gratitude', text: newEntry, dateMs: Date.now()});
+                        setAppState('viewing');
+                    }} />
                 </ButtonContainer>)
             case "viewing":
             default:

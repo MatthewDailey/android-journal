@@ -5,6 +5,7 @@ import { MainView } from './main_view'
 import { ScrollingList } from './components/scrolling_list'
 import { StreakHeader } from './components/streak'
 import { PrimaryButton } from './components/button'
+import JournalEntryHooks from './journal_entries_hook'
 
 describe('MainView', () => {
     it('renders key views', () => {
@@ -46,6 +47,44 @@ describe('MainView', () => {
         expect(screen.getByText('Gratitude')).toBeTruthy()
 
         // Check input
+        expect(screen.queryByTestId('edit_input')).toBeFalsy()
+    })
+    it('calls save after editing journal', () => {
+        const addEntry = jest.fn()
+        const testDateMs = 123
+        jest.spyOn(Date, 'now').mockReturnValue(testDateMs)
+        jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({entries: [], addEntry, removeEntry: jest.fn()})
+
+        render(<MainView />)
+        fireEvent.press(screen.getByText('Journal'))
+        fireEvent.changeText(screen.getByTestId('edit_input'), 'test')
+        fireEvent.press(screen.getByText('Save'))
+
+        // Check save called
+        expect(addEntry).toHaveBeenCalledWith({type: 'journal', text: 'test', dateMs: testDateMs})
+
+        // Check returned to viewing
+        expect(screen.getByText('Journal')).toBeTruthy()
+        expect(screen.getByText('Gratitude')).toBeTruthy()
+        expect(screen.queryByTestId('edit_input')).toBeFalsy()
+    })
+    it('calls save after editing gratitude', () => {
+        const addEntry = jest.fn()
+        const testDateMs = 123
+        jest.spyOn(Date, 'now').mockReturnValue(testDateMs)
+        jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({entries: [], addEntry, removeEntry: jest.fn()})
+
+        render(<MainView />)
+        fireEvent.press(screen.getByText('Gratitude'))
+        fireEvent.changeText(screen.getByTestId('edit_input'), 'test')
+        fireEvent.press(screen.getByText('Save'))
+
+        // Check save called
+        expect(addEntry).toHaveBeenCalledWith({type: 'gratitude', text: 'test', dateMs: testDateMs})
+
+        // Check returned to viewing
+        expect(screen.getByText('Journal')).toBeTruthy()
+        expect(screen.getByText('Gratitude')).toBeTruthy()
         expect(screen.queryByTestId('edit_input')).toBeFalsy()
     })
 })
