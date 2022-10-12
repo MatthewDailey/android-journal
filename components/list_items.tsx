@@ -9,9 +9,6 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         paddingBottom: 8,
     },
-    dateListItem: {
-        padding: 8,
-    },
     focussed: {
         backgroundColor: "#FFEEDB",
     }
@@ -44,13 +41,21 @@ export const JournalListItem = (props: { text: string, dateMs: number }) => (
     <TextListItem text={props.text} header={dateMsToHoursAndMinutesString(props.dateMs)} />
 )
 
+// Note this is janky because of an issues with date.toLocaleDateString() https://github.com/facebook/react-native/issues/19410
+function getMonthName(date: Date) {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    return monthNames[date.getMonth()];
+}
+
 export const DateListItem = (props: { dateMs: number }) => {
     const date = new Date(props.dateMs);
-    const monthDayYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
+    const monthDayYear = `${getMonthName(date)} ${date.getDate()}, ${date.getFullYear()}`;
     const today = new Date();
     const isToday = today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear();
     return (
-        <View style={styles.dateListItem}>
+        <View style={styles.listItem}>
             <HeavyText>{isToday? 'Today' : monthDayYear}</HeavyText>
         </View>
     )
