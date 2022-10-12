@@ -10,8 +10,13 @@ export type JournalEntriesProps = {
 
 const STORAGE_KEY = "@journal_entries";
 
-function storeEntries(entries: JournalEntry[]) {
-    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+async function storeEntries(entries: JournalEntry[]) {
+    try {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        console.log("Stored entries", entries);
+    } catch (e) {
+        console.error("Failed to store entries", e);
+    }
 }
 
 export default {
@@ -19,7 +24,13 @@ export default {
         const [entries, setEntries] = React.useState<JournalEntry[]>([]);
     
         React.useEffect(() => {
-            AsyncStorage.getItem(STORAGE_KEY).then((entriesStr) => { entriesStr && setEntries(JSON.parse(entriesStr)) });
+            AsyncStorage.getItem(STORAGE_KEY)
+            .then((entriesStr) => { 
+                console.log("Loaded entries", entriesStr);
+                if (entriesStr) {
+                    setEntries(JSON.parse(entriesStr));
+                }
+            });
         }, []);
 
         return {
@@ -27,7 +38,7 @@ export default {
             addEntry: (entry) => { 
                 const newEntries = [entry].concat(entries)
                 setEntries(newEntries);
-                AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+                storeEntries(newEntries);
             },
             removeEntry: () => { },
         }
