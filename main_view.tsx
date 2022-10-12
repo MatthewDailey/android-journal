@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, StatusBar } from "react-native";
 import { ButtonContainer, PrimaryButton } from "./components/button";
 import { AddNewProps, roundToDay, ScrollingList } from "./components/scrolling_list";
 import { StreakHeader } from "./components/streak";
@@ -10,7 +10,6 @@ import { JournalEntry } from "./types";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
     },
 });
 
@@ -31,7 +30,7 @@ function computeStreak(entries: JournalEntry[]): number {
     let streak = 0
 
     // Init to tomorrow if we know the streak starts today.
-    let lastDate = Date.now() + (firstEntryIsToday(entries) ? ONE_DAY_MS : 0) 
+    let lastDate = Date.now() + (firstEntryIsToday(entries) ? ONE_DAY_MS : 0)
     for (const entry of entries) {
         const dayDifference = roundToDay(lastDate) - roundToDay(entry.dateMs)
         if (dayDifference === ONE_DAY_MS) {
@@ -55,17 +54,17 @@ export const MainView = () => {
         switch (appState) {
             case "addingJournal":
                 return (<ButtonContainer>
-                    <PrimaryButton text="Cancel" onPress={() => {setAppState('viewing') }} />
-                    <PrimaryButton text="Save" onPress={() => { 
-                        addEntry({type: 'journal', text: newEntry, dateMs: Date.now()});
+                    <PrimaryButton text="Cancel" onPress={() => { setAppState('viewing') }} />
+                    <PrimaryButton text="Save" onPress={() => {
+                        addEntry({ type: 'journal', text: newEntry, dateMs: Date.now() });
                         setAppState('viewing');
                     }} />
                 </ButtonContainer>)
             case "addingGratitude":
                 return (<ButtonContainer>
-                    <PrimaryButton text="Cancel" onPress={() => {setAppState('viewing') }} />
-                    <PrimaryButton text="Save" onPress={() => { 
-                        addEntry({type: 'gratitude', text: newEntry, dateMs: Date.now()});
+                    <PrimaryButton text="Cancel" onPress={() => { setAppState('viewing') }} />
+                    <PrimaryButton text="Save" onPress={() => {
+                        addEntry({ type: 'gratitude', text: newEntry, dateMs: Date.now() });
                         setAppState('viewing');
                     }} />
                 </ButtonContainer>)
@@ -78,7 +77,7 @@ export const MainView = () => {
         }
     }
 
-    const getAddNew = () : AddNewProps|undefined => {
+    const getAddNew = (): AddNewProps | undefined => {
         switch (appState) {
             case "addingJournal":
                 return {
@@ -93,13 +92,14 @@ export const MainView = () => {
             default:
                 undefined
         }
-    } 
+    }
 
     return (
         <View style={styles.container}>
             <StreakHeader count={computeStreak(entries)} isStreakActive={firstEntryIsToday(entries)} />
             <ScrollingList entries={entries} addNew={getAddNew()} />
             {buttonsFragment()}
+            <StatusBar />
         </View >
     );
 }

@@ -4,8 +4,8 @@ import { HeavyText } from './text'
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 40,
-        paddingBottom: 8,
+        paddingTop: 16,
+        paddingBottom: 16,
         alignItems: 'center',
         borderBottomWidth: 2,
         overflow: 'hidden',
