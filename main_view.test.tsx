@@ -93,6 +93,7 @@ describe('MainView', () => {
         const main = renderer.create(<MainView />)
         const streak = main.root.findByType(StreakHeader)
         expect(streak.props.count).toEqual(0)
+        expect(streak.props.isStreakActive).toEqual(false)
     })
     it('passes single streak', () => {
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
@@ -104,8 +105,9 @@ describe('MainView', () => {
         const main = renderer.create(<MainView />)
         const streak = main.root.findByType(StreakHeader)
         expect(streak.props.count).toEqual(1)
+        expect(streak.props.isStreakActive).toEqual(true)
     })
-    it('only counts streak per day', () => {
+    it('only counts streak per day to 2', () => {
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
             entries: [{ type: 'gratitude', text: 'text', dateMs: Date.now() },
             { type: 'gratitude', text: 'text', dateMs: Date.now() },
@@ -116,7 +118,8 @@ describe('MainView', () => {
         })
         const main = renderer.create(<MainView />)
         const streak = main.root.findByType(StreakHeader)
-        expect(streak.props.count).toEqual(1)
+        expect(streak.props.count).toEqual(2)
+        expect(streak.props.isStreakActive).toEqual(true)
     })
     it('only starts streak on today or yesterday', () => {  
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
@@ -128,6 +131,7 @@ describe('MainView', () => {
         const main = renderer.create(<MainView />)
         const streak = main.root.findByType(StreakHeader)
         expect(streak.props.count).toEqual(0)
+        expect(streak.props.isStreakActive).toEqual(false)
     })
     it('starts streak yesterday', () => {
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
@@ -139,5 +143,6 @@ describe('MainView', () => {
         const main = renderer.create(<MainView />)
         const streak = main.root.findByType(StreakHeader)
         expect(streak.props.count).toEqual(1)
+        expect(streak.props.isStreakActive).toEqual(false)
     })
 })

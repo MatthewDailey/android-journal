@@ -17,14 +17,14 @@ const styles = StyleSheet.create({
     }
 })
 
-export const StreakHeader = (props: { count: number, isStreak: boolean }) => {
-    const color = props.isStreak ? '#61C9A8' : '#BA3B46'
+export const StreakHeader = (props: { count: number, isStreakActive: boolean }) => {
+    const color = props.isStreakActive ? '#61C9A8' : '#BA3B46'
 
     // TODO: Do not animate on launch with isStreak == true
     const timing = 300
     const fadeAnim = React.useRef(new Animated.Value(0)).current
     React.useEffect(() => {
-        if (props.isStreak) {
+        if (props.isStreakActive) {
             Animated.sequence([
                 Animated.timing(fadeAnim,
                     {
@@ -41,11 +41,11 @@ export const StreakHeader = (props: { count: number, isStreak: boolean }) => {
                     }),
             ]).start();
         }
-    }, [fadeAnim, props.isStreak])
+    }, [fadeAnim, props.isStreakActive])
 
     return (
         <View style={{ ...styles.container, borderBottomColor: color }}>
-            {props.isStreak && <Animated.View style={{ ...styles.ripple, opacity: fadeAnim, width: 700, height: 100 }} />}
+            {props.isStreakActive && <Animated.View style={{ ...styles.ripple, opacity: fadeAnim, width: 700, height: 100 }} />}
             <HeavyText color={color}>{props.count}</HeavyText>
         </View>
     )

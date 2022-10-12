@@ -36,7 +36,7 @@ function computeStreak(entries: JournalEntry[]): number {
         const dayDifference = roundToDay(lastDate) - roundToDay(entry.dateMs)
         if (dayDifference === ONE_DAY_MS) {
             streak++;
-        } else {
+        } else if (dayDifference > ONE_DAY_MS) {
             break;
         }
         lastDate = entry.dateMs;
@@ -97,7 +97,7 @@ export const MainView = () => {
 
     return (
         <View style={styles.container}>
-            <StreakHeader count={computeStreak(entries)} isStreak={false} />
+            <StreakHeader count={computeStreak(entries)} isStreakActive={firstEntryIsToday(entries)} />
             <ScrollingList entries={entries} addNew={getAddNew()} />
             {buttonsFragment()}
         </View >
