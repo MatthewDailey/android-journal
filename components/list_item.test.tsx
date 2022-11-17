@@ -46,6 +46,11 @@ describe('List Items', () => {
             const header = tree.root.findByType(LightText)
             expect(header.props.children).toContain('8:59am')
         })
+        it('shows 12am/pm rather than 0', () => {
+            const tree: any = renderer.create(<JournalListItem text="amazing wife" dateMs={1665475193440} />)
+            const header = tree.root.findByType(LightText)
+            expect(header.props.children).toContain('12:59am')
+        })
         it('includes text', () => {
             const tree: any = renderer.create(<JournalListItem text="amazing wife" dateMs={1665553993440} />)
             const text = tree.root.findByType(NormalText)

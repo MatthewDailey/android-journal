@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
 
 function dateMsToHoursAndMinutesString(dateMs: number) {
     const date = new Date(dateMs);
-    return `${date.getHours() % 12}:${date.getMinutes()}${date.getHours() > 12 ? "pm" : "am"}`;
+    const hours = (date.getHours() % 12);
+    return `${hours || 12}:${date.getMinutes()}${date.getHours() > 12 ? "pm" : "am"}`;
 }
 
 const TextListItem = (props: { text: string, header: string }) => {
