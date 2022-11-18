@@ -100,6 +100,8 @@ describe('MainView', () => {
         expect(streak.props.isStreakActive).toEqual(false)
     })
     it('passes single streak', () => {
+        jest.spyOn(Date, 'now').mockReturnValue(new Date("2022-11-05T00:00:00.000Z").getTime())
+
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
             entries: [{ type: 'gratitude', text: 'text', dateMs: Date.now() }], 
             addEntry: jest.fn(),
@@ -112,6 +114,8 @@ describe('MainView', () => {
         expect(streak.props.isStreakActive).toEqual(true)
     })
     it('only counts streak per day to 2', () => {
+        jest.spyOn(Date, 'now').mockReturnValue(new Date("2022-11-05T00:00:00.000Z").getTime())
+
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
             entries: [{ type: 'gratitude', text: 'text', dateMs: Date.now() },
             { type: 'gratitude', text: 'text', dateMs: Date.now() },
@@ -148,5 +152,41 @@ describe('MainView', () => {
         const streak = main.root.findByType(StreakHeader)
         expect(streak.props.count).toEqual(1)
         expect(streak.props.isStreakActive).toEqual(false)
+    })
+    it('counts streak over fall daylights savings', () => {
+        const dayLightSavings2022 = new Date("2022-11-06T21:43:42.586Z").getTime()
+        jest.spyOn(Date, 'now').mockReturnValue(dayLightSavings2022 + ONE_DAY_MS * 2)
+        jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
+            entries: [
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022 + ONE_DAY_MS * 2},
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022 + ONE_DAY_MS * 1},
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022},
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022 - ONE_DAY_MS * 1},
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022 - ONE_DAY_MS * 2},
+        ], 
+            addEntry: jest.fn(),
+            removeEntry: jest.fn() 
+        })
+        const main = renderer.create(<MainView />)
+        const streak = main.root.findByType(StreakHeader)
+        expect(streak.props.count).toEqual(5)
+    })
+    it('counts streak over spring daylights savings', () => {
+        const dayLightSavings2022 = new Date("2022-03-13T21:43:42.586Z").getTime()
+        jest.spyOn(Date, 'now').mockReturnValue(dayLightSavings2022 + ONE_DAY_MS * 2)
+        jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
+            entries: [
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022 + ONE_DAY_MS * 2},
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022 + ONE_DAY_MS * 1},
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022},
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022 - ONE_DAY_MS * 1},
+            { type: 'gratitude', text: 'text', dateMs: dayLightSavings2022 - ONE_DAY_MS * 2},
+        ], 
+            addEntry: jest.fn(),
+            removeEntry: jest.fn() 
+        })
+        const main = renderer.create(<MainView />)
+        const streak = main.root.findByType(StreakHeader)
+        expect(streak.props.count).toEqual(5)
     })
 })

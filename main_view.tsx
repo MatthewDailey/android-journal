@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, StatusBar as RNStatusBar } from "react-native";
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { ButtonContainer, PrimaryButton } from "./components/button";
-import { AddNewProps, roundToDay, ScrollingList } from "./components/scrolling_list";
+import { AddNewProps, ScrollingList } from "./components/scrolling_list";
 import { StreakHeader } from "./components/streak";
 import { colors, ONE_DAY_MS } from "./constants";
 import JournalEntryHooks from "./journal_entries_hook";
@@ -17,12 +17,17 @@ const styles = StyleSheet.create({
 
 type AppState = "viewing" | "addingGratitude" | "addingJournal" | "removing";
 
+function roundToDayOfYear(ms: number): number {
+    const date = new Date(ms)
+    return Math.floor((date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 1000 / 60 / 60 / 24);
+}
+
 function firstEntryIsToday(entries: JournalEntry[]): boolean {
-    return entries.length > 0 && roundToDay(entries[0].dateMs) === roundToDay(Date.now());
+    return entries.length > 0 && roundToDayOfYear(entries[0].dateMs) === roundToDayOfYear(Date.now());
 }
 
 function firstEntryIsYesterday(entries: JournalEntry[]): boolean {
-    return entries.length > 0 && roundToDay(entries[0].dateMs) === roundToDay(Date.now() - ONE_DAY_MS);
+    return entries.length > 0 && roundToDayOfYear(entries[0].dateMs) === roundToDayOfYear(Date.now() - ONE_DAY_MS);
 }
 
 function computeStreak(entries: JournalEntry[]): number {
@@ -34,10 +39,10 @@ function computeStreak(entries: JournalEntry[]): number {
     // Init to tomorrow if we know the streak starts today.
     let lastDate = Date.now() + (firstEntryIsToday(entries) ? ONE_DAY_MS : 0)
     for (const entry of entries) {
-        const dayDifference = roundToDay(lastDate) - roundToDay(entry.dateMs)
-        if (dayDifference === ONE_DAY_MS) {
+        const dayDifference = roundToDayOfYear(lastDate) - roundToDayOfYear(entry.dateMs)
+        if (dayDifference === 1) {
             streak++;
-        } else if (dayDifference > ONE_DAY_MS) {
+        } else if (dayDifference > 1) {
             break;
         }
         lastDate = entry.dateMs;

@@ -23,7 +23,7 @@ export type ListItemType = {
 
 export const roundToDay = (dateMs: number) => {
     const date = new Date(dateMs)
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime()
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() 
 }
 
 export const ScrollingList = (props: { entries: JournalEntry[], addNew?: AddNewProps }) => {
