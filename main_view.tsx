@@ -126,7 +126,6 @@ export const MainView = () => {
 
     const isActiveStreak = firstEntryIsToday(entries);
     const considerRemoving = (entry: JournalEntry) => {
-        console.log("Consider removing", entry)
         setRemovingEntry(entry);
         setAppState("removing");
     }

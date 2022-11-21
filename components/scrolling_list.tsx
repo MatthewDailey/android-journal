@@ -3,10 +3,11 @@ import { FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'r
 import { JournalEntry } from "../types";
 import { DateListItem, EditingListItem, GratitudeListItem, JournalListItem, NoEntryListItem } from './list_items';
 
-export type EditingProps = {
+type AddNewProps = {
     type: 'journal' | 'gratitude';
     onTextChange: (text: string) => void;
-} | {
+}
+export type EditingProps =  AddNewProps| {
     type: 'removing';
     entry: JournalEntry;
 }
@@ -15,13 +16,13 @@ export type ListItemType = {
     type: 'date',
     dateMs: number
 } | {
-    type: 'no_entry',
+    type: 'noEntry',
 } | {
     type: 'entry',
     entryData: JournalEntry,
 } | {
-    type: 'editing',
-    addNewProps: EditingProps,
+    type: 'addingNew',
+    addNewProps: AddNewProps,
 }
 
 export const roundToDay = (dateMs: number) => {
@@ -36,9 +37,9 @@ export const ScrollingList = (props: { entries: JournalEntry[], editing?: Editin
         switch(item.type) {
             case 'date':
                 return <DateListItem dateMs={item.dateMs} />
-            case 'no_entry':
+            case 'noEntry':
                 return <NoEntryListItem />
-            case 'editing':
+            case 'addingNew':
                 return <EditingListItem header={item.addNewProps.type === 'gratitude' ? "I'm grateful for..." : undefined} onChangeText={item.addNewProps.onTextChange} />
             case 'entry':
                 if (item.entryData.type === 'gratitude') {
@@ -63,7 +64,7 @@ export const ScrollingList = (props: { entries: JournalEntry[], editing?: Editin
     entryListToRender.push({ type: 'date', dateMs: nowMs })
 
     if (props.editing && (props.editing.type === 'journal' || props.editing.type === 'gratitude')) {
-        entryListToRender.push({ type: 'editing', addNewProps: props.editing })
+        entryListToRender.push({ type: 'addingNew', addNewProps: props.editing })
         flatListRef.current?.scrollToIndex({ index: 0, animated: true })
     }
 
@@ -71,7 +72,7 @@ export const ScrollingList = (props: { entries: JournalEntry[], editing?: Editin
     let mostRecentlyAddedDay = today
 
     if (!props.editing && (localEntries.length === 0 || roundToDay(localEntries[0].dateMs) < today)) {
-        entryListToRender.push({ type: 'no_entry' })
+        entryListToRender.push({ type: 'noEntry' })
     }
 
     localEntries.forEach(entry => { 
