@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, StatusBar as RNStatusBar } from "react-native";
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { ButtonContainer, PrimaryButton } from "./components/button";
-import { AddNewProps, ScrollingList } from "./components/scrolling_list";
+import { EditingProps, ScrollingList } from "./components/scrolling_list";
 import { StreakHeader } from "./components/streak";
 import { colors, ONE_DAY_MS } from "./constants";
 import JournalEntryHooks from "./journal_entries_hook";
@@ -47,18 +47,23 @@ function computeStreak(entries: JournalEntry[]): number {
         }
         lastDate = entry.dateMs;
     }
+    console.log("streak", streak)
     return streak;
 }
 
 export const MainView = () => {
     const [appState, setAppState] = React.useState<AppState>("viewing");
     const { entries, addEntry, removeEntry } = JournalEntryHooks.useJournalEntries();
+    const [entryBeingRemoved, setRemovingEntry] = React.useState<JournalEntry | undefined>(undefined);
 
     const [newEntry, setNewEntry] = React.useState<string>("");
     const onTextChange = setNewEntry;
 
-    if (!entries) {
-        return null;
+    const onClickDelete = () => {
+        if (entryBeingRemoved) {
+            removeEntry(entryBeingRemoved);
+            setRemovingEntry(undefined);
+        }
     }
 
     const buttonsFragment = () => {
@@ -79,6 +84,14 @@ export const MainView = () => {
                         setAppState('viewing');
                     }} />
                 </ButtonContainer>)
+            case "removing":
+                return (<ButtonContainer>
+                    <PrimaryButton text="Cancel" onPress={() => { setAppState('viewing') }} />
+                    <PrimaryButton text="Delete" onPress={() => { 
+                        onClickDelete(); 
+                        setAppState('viewing') 
+                    }} />
+                </ButtonContainer>)
             case "viewing":
             default:
                 return (<ButtonContainer>
@@ -88,7 +101,13 @@ export const MainView = () => {
         }
     }
 
-    const getAddNew = (): AddNewProps | undefined => {
+    const getEditing = (): EditingProps | undefined => {
+        if (entryBeingRemoved) {
+            return {
+                type: "removing",
+                entry: entryBeingRemoved,
+            }
+        }
         switch (appState) {
             case "addingJournal":
                 return {
@@ -106,11 +125,15 @@ export const MainView = () => {
     }
 
     const isActiveStreak = firstEntryIsToday(entries);
+    const considerRemoving = (entry: JournalEntry) => {
+        setRemovingEntry(entry);
+        setAppState("removing");
+    }
 
     return (
         <View style={styles.container}>
             <StreakHeader count={computeStreak(entries)} isStreakActive={isActiveStreak} />
-            <ScrollingList entries={entries} addNew={getAddNew()} />
+            <ScrollingList entries={entries} editing={getEditing()} considerRemoving={considerRemoving}/>
             {buttonsFragment()}
             <ExpoStatusBar backgroundColor={isActiveStreak ? colors.green : colors.red} />
         </View >

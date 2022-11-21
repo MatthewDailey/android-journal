@@ -1,11 +1,14 @@
 import React, { MutableRefObject } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { JournalEntry } from "../types";
 import { DateListItem, EditingListItem, GratitudeListItem, JournalListItem, NoEntryListItem } from './list_items';
 
-export type AddNewProps = {
+export type EditingProps = {
     type: 'journal' | 'gratitude';
     onTextChange: (text: string) => void;
+} | {
+    type: 'removing';
+    entry: JournalEntry;
 }
 
 export type ListItemType = {
@@ -18,7 +21,7 @@ export type ListItemType = {
     entryData: JournalEntry,
 } | {
     type: 'editing',
-    addNewProps: AddNewProps,
+    addNewProps: EditingProps,
 }
 
 export const roundToDay = (dateMs: number) => {
@@ -26,7 +29,15 @@ export const roundToDay = (dateMs: number) => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() 
 }
 
-export const ScrollingList = (props: { entries: JournalEntry[], addNew?: AddNewProps }) => {
+const longPressable = (component: JSX.Element, onLongPress: () => void) => {
+    return (
+        <Pressable onLongPress={onLongPress}>
+            {component}
+        </Pressable>
+    )
+}
+
+export const ScrollingList = (props: { entries: JournalEntry[], editing?: EditingProps, considerRemoving: (entry: JournalEntry) => void }) => {
     const flatListRef = React.useRef<FlatList<ListItemType>>(null)
 
     const renderItem = ({item} : {item: ListItemType}) => {
@@ -39,9 +50,9 @@ export const ScrollingList = (props: { entries: JournalEntry[], addNew?: AddNewP
                 return <EditingListItem header={item.addNewProps.type === 'gratitude' ? "I'm grateful for..." : undefined} onChangeText={item.addNewProps.onTextChange} />
             case 'entry':
                 if (item.entryData.type === 'gratitude') {
-                    return <GratitudeListItem text={item.entryData.text} dateMs={item.entryData.dateMs} />
+                    return longPressable(<GratitudeListItem text={item.entryData.text} dateMs={item.entryData.dateMs} />, () => props.considerRemoving(item.entryData))
                 } else if (item.entryData.type === 'journal') {
-                    return <JournalListItem text={item.entryData.text} dateMs={item.entryData.dateMs} />
+                    return longPressable(<JournalListItem text={item.entryData.text} dateMs={item.entryData.dateMs} />, () => props.considerRemoving(item.entryData))
                 }
             default:
                 return null
@@ -55,15 +66,15 @@ export const ScrollingList = (props: { entries: JournalEntry[], addNew?: AddNewP
     const nowMs = new Date().getTime()
     entryListToRender.push({ type: 'date', dateMs: nowMs })
 
-    if (props.addNew) {
-        entryListToRender.push({ type: 'editing', addNewProps: props.addNew })
+    if (props.editing) {
+        entryListToRender.push({ type: 'editing', addNewProps: props.editing })
         flatListRef.current?.scrollToIndex({ index: 0, animated: true })
     }
 
     const today = roundToDay(nowMs)
     let mostRecentlyAddedDay = today
 
-    if (!props.addNew && (localEntries.length === 0 || roundToDay(localEntries[0].dateMs) < today)) {
+    if (!props.editing && (localEntries.length === 0 || roundToDay(localEntries[0].dateMs) < today)) {
         entryListToRender.push({ type: 'no_entry' })
     }
 
@@ -79,7 +90,7 @@ export const ScrollingList = (props: { entries: JournalEntry[], addNew?: AddNewP
     return (
         <FlatList 
             ref={flatListRef}
-            scrollEnabled={!props.addNew}
+            scrollEnabled={!props.editing}
             data={entryListToRender}
             renderItem={renderItem}
         />

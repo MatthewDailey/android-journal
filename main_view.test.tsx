@@ -92,6 +92,21 @@ describe('MainView', () => {
         expect(screen.getByText('Gratitude')).toBeTruthy()
         expect(screen.queryByTestId('edit_input')).toBeFalsy()
     })
+    it('long-pressing opens delete view', () => {
+        jest.spyOn(Date, 'now').mockReturnValue(new Date("2022-11-05T00:00:00.000Z").getTime())
+        const removeEntry = jest.fn()
+        jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
+            entries: [{ type: 'gratitude', text: 'text', dateMs: Date.now() }], 
+            addEntry: jest.fn(),
+            removeEntry,
+        })
+        render(<MainView />)
+        expect(screen.getByText('text')).toBeTruthy()
+        fireEvent(screen.getByText('text'), 'onLongPress')
+
+        expect(screen.getByText('Delete')).toBeTruthy()
+        expect(screen.getByText('Cancel')).toBeTruthy()
+    })
     it('passes empty streak', () => {
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ entries: [], addEntry: jest.fn(), removeEntry: jest.fn() })
         const main = renderer.create(<MainView />)

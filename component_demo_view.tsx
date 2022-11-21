@@ -72,7 +72,7 @@ export function ComponentDemoView() {
     return (
         <View style={styles.container}>
             <StreakHeader count={streakCount} isStreakActive={streakCount > 1} />
-            <ScrollingList entries={exampleList} addNew={streakCount === 1 ? { type:"gratitude", onTextChange(text) {}} : undefined}/>
+            <ScrollingList entries={exampleList} editing={streakCount === 1 ? { type:"gratitude", onTextChange(text) {}} : undefined}/>
             <ButtonContainer>
                 <PrimaryButton onPress={() => { setStreakCount(streakCount + 1)} } text="Increment" />
                 <PrimaryButton onPress={() => { setStreakCount(streakCount - 1)} } text="Decrement" />
