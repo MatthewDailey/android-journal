@@ -7,6 +7,7 @@ import { StreakHeader } from './components/streak'
 import { PrimaryButton } from './components/button'
 import JournalEntryHooks from './journal_entries_hook'
 import { ONE_DAY_MS } from './constants'
+import { JournalEntry } from './types'
 
 describe('MainView', () => {
     it('renders key views', () => {
@@ -95,17 +96,24 @@ describe('MainView', () => {
     it('long-pressing opens delete view', () => {
         jest.spyOn(Date, 'now').mockReturnValue(new Date("2022-11-05T00:00:00.000Z").getTime())
         const removeEntry = jest.fn()
+        const entry: JournalEntry = { type: 'gratitude', text: 'text', dateMs: Date.now() }
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ 
-            entries: [{ type: 'gratitude', text: 'text', dateMs: Date.now() }], 
+            entries: [entry], 
             addEntry: jest.fn(),
             removeEntry,
         })
         render(<MainView />)
-        expect(screen.getByText('text')).toBeTruthy()
-        fireEvent(screen.getByText('text'), 'onLongPress')
+        expect(screen.getByText(entry.text)).toBeTruthy()
+        fireEvent(screen.getByText(entry.text), 'onLongPress')
 
         expect(screen.getByText('Delete')).toBeTruthy()
         expect(screen.getByText('Cancel')).toBeTruthy()
+
+        fireEvent.press(screen.getByText('Delete'))
+        expect(removeEntry).toHaveBeenCalledWith(entry)
+
+        expect(screen.getByText('Journal')).toBeTruthy()
+        expect(screen.getByText('Gratitude')).toBeTruthy()
     })
     it('passes empty streak', () => {
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ entries: [], addEntry: jest.fn(), removeEntry: jest.fn() })
