@@ -20,12 +20,12 @@ function dateMsToHoursAndMinutesString(dateMs: number) {
     return `${hours || 12}:${date.getMinutes()}${date.getHours() > 12 ? "pm" : "am"}`;
 }
 
-const TextListItem = (props: { text: string, header: string }) => {
+const TextListItem = (props: { text: string, header: string, onLongPress?: () => void }) => {
     const [expanded, setExpanded] = React.useState(true);
     const toggleExpanded = () => setExpanded(!expanded);
 
     return (
-        <TouchableWithoutFeedback onPress={toggleExpanded}>
+        <TouchableWithoutFeedback onPress={toggleExpanded} onLongPress={props.onLongPress}>
             <View style={styles.listItem}>
                 <LightText>{props.header}</LightText>
                 <NormalText numberOfLines={expanded ? 2 : undefined}>{props.text}</NormalText>
@@ -34,12 +34,18 @@ const TextListItem = (props: { text: string, header: string }) => {
     )
 }
 
-export const GratitudeListItem = (props: { text: string, dateMs: number }) => (
-    <TextListItem text={props.text} header={`${dateMsToHoursAndMinutesString(props.dateMs)} • I'm grateful for...`} />
+type ListItemProps = {
+    text: string;
+    dateMs: number;
+    onLongPress: () => void;
+};
+
+export const GratitudeListItem = (props: ListItemProps) => (
+    <TextListItem text={props.text} header={`${dateMsToHoursAndMinutesString(props.dateMs)} • I'm grateful for...`} onLongPress={props.onLongPress} />
 )
 
-export const JournalListItem = (props: { text: string, dateMs: number }) => (
-    <TextListItem text={props.text} header={dateMsToHoursAndMinutesString(props.dateMs)} />
+export const JournalListItem = (props: ListItemProps) => (
+    <TextListItem text={props.text} header={dateMsToHoursAndMinutesString(props.dateMs)} onLongPress={props.onLongPress} />
 )
 
 // Note this is janky because of an issues with date.toLocaleDateString() https://github.com/facebook/react-native/issues/19410

@@ -1,5 +1,5 @@
 import React, { MutableRefObject } from 'react'
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { JournalEntry } from "../types";
 import { DateListItem, EditingListItem, GratitudeListItem, JournalListItem, NoEntryListItem } from './list_items';
 
@@ -29,14 +29,6 @@ export const roundToDay = (dateMs: number) => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() 
 }
 
-const longPressable = (component: JSX.Element, onLongPress: () => void) => {
-    return (
-        <Pressable onLongPress={onLongPress}>
-            {component}
-        </Pressable>
-    )
-}
-
 export const ScrollingList = (props: { entries: JournalEntry[], editing?: EditingProps, considerRemoving: (entry: JournalEntry) => void }) => {
     const flatListRef = React.useRef<FlatList<ListItemType>>(null)
 
@@ -50,9 +42,13 @@ export const ScrollingList = (props: { entries: JournalEntry[], editing?: Editin
                 return <EditingListItem header={item.addNewProps.type === 'gratitude' ? "I'm grateful for..." : undefined} onChangeText={item.addNewProps.onTextChange} />
             case 'entry':
                 if (item.entryData.type === 'gratitude') {
-                    return longPressable(<GratitudeListItem text={item.entryData.text} dateMs={item.entryData.dateMs} />, () => props.considerRemoving(item.entryData))
+                    return (
+                        <GratitudeListItem text={item.entryData.text} dateMs={item.entryData.dateMs} onLongPress={() => props.considerRemoving(item.entryData)}/>
+                    )
                 } else if (item.entryData.type === 'journal') {
-                    return longPressable(<JournalListItem text={item.entryData.text} dateMs={item.entryData.dateMs} />, () => props.considerRemoving(item.entryData))
+                    return (
+                        <JournalListItem text={item.entryData.text} dateMs={item.entryData.dateMs} onLongPress={() => props.considerRemoving(item.entryData)} />
+                    )
                 }
             default:
                 return null
@@ -66,7 +62,7 @@ export const ScrollingList = (props: { entries: JournalEntry[], editing?: Editin
     const nowMs = new Date().getTime()
     entryListToRender.push({ type: 'date', dateMs: nowMs })
 
-    if (props.editing) {
+    if (props.editing && (props.editing.type === 'journal' || props.editing.type === 'gratitude')) {
         entryListToRender.push({ type: 'editing', addNewProps: props.editing })
         flatListRef.current?.scrollToIndex({ index: 0, animated: true })
     }

@@ -108,12 +108,14 @@ describe('MainView', () => {
 
         expect(screen.getByText('Delete')).toBeTruthy()
         expect(screen.getByText('Cancel')).toBeTruthy()
+        expect(screen.queryByTestId('edit_input')).toBeFalsy()
 
         fireEvent.press(screen.getByText('Delete'))
         expect(removeEntry).toHaveBeenCalledWith(entry)
 
         expect(screen.getByText('Journal')).toBeTruthy()
         expect(screen.getByText('Gratitude')).toBeTruthy()
+        expect(screen.queryByTestId('edit_input')).toBeFalsy()
     })
     it('passes empty streak', () => {
         jest.spyOn(JournalEntryHooks, 'useJournalEntries').mockReturnValue({ entries: [], addEntry: jest.fn(), removeEntry: jest.fn() })
