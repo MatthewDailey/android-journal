@@ -41,7 +41,11 @@ export default {
                 setEntries(newEntries);
                 storeEntries(newEntries);
             },
-            removeEntry: () => { },
+            removeEntry: (entry) => { 
+                const newEntries = entries.filter((e) => e !== entry);
+                setEntries(newEntries);
+                storeEntries(newEntries);
+            },
         }
     }
 }
