@@ -86,7 +86,10 @@ export const MainView = () => {
                 </ButtonContainer>)
             case "removing":
                 return (<ButtonContainer>
-                    <PrimaryButton text="Cancel" onPress={() => { setAppState('viewing') }} />
+                    <PrimaryButton text="Cancel" onPress={() => { 
+                        setRemovingEntry(undefined)
+                        setAppState('viewing') 
+                    }} />
                     <PrimaryButton text="Delete" onPress={() => { 
                         onClickDelete(); 
                         setAppState('viewing') 

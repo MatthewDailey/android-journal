@@ -7,7 +7,7 @@ type AddNewProps = {
     type: 'journal' | 'gratitude';
     onTextChange: (text: string) => void;
 }
-export type EditingProps =  AddNewProps| {
+export type EditingProps =  AddNewProps | {
     type: 'removing';
     entry: JournalEntry;
 }
@@ -43,12 +43,14 @@ export const ScrollingList = (props: { entries: JournalEntry[], editing?: Editin
                 return <EditingListItem header={item.addNewProps.type === 'gratitude' ? "I'm grateful for..." : undefined} onChangeText={item.addNewProps.onTextChange} />
             case 'entry':
                 if (item.entryData.type === 'gratitude') {
+                    const isFocussed = props.editing?.type === "removing" && props.editing.entry === item.entryData;
                     return (
-                        <GratitudeListItem text={item.entryData.text} dateMs={item.entryData.dateMs} onLongPress={() => props.considerRemoving(item.entryData)}/>
+                        <GratitudeListItem text={item.entryData.text} dateMs={item.entryData.dateMs} onLongPress={() => props.considerRemoving(item.entryData)} isFocussed={isFocussed}/>
                     )
                 } else if (item.entryData.type === 'journal') {
+                    const isFocussed = props.editing?.type === "removing" && props.editing.entry === item.entryData;
                     return (
-                        <JournalListItem text={item.entryData.text} dateMs={item.entryData.dateMs} onLongPress={() => props.considerRemoving(item.entryData)} />
+                        <JournalListItem text={item.entryData.text} dateMs={item.entryData.dateMs} onLongPress={() => props.considerRemoving(item.entryData)} isFocussed={isFocussed} />
                     )
                 }
             default:
